@@ -1,0 +1,56 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1 class="display-4 text-center">Manage Announcements</h1>
+  <div class="panel panel-default content-section">
+    <div class="table-responsive">
+      <table class="table table-hover user-manager-table-mt">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col" class="text-center">Announcement</th>
+            <th scope="col" class="text-center">Date&nbsp;Posted</th>
+            <th scope="col" class="text-center">Edit</th>
+            <th scope="col" class="text-center">
+              <a type="button" class="btn btn-emerald btn-xs-ann" href="{{ url_for('admin.add_ann') }}">+ Add</a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ann in anns %}
+          <tr>
+            <th scope="row" class="text-center align-middle">{{ ann.content }}</th>
+            <td class="text-center align-middle">{{ ann.date_posted.strftime('%H:%M %d-%m-%Y') }}</td>
+            <td class="text-center align-middle">
+              <a type="button" class="btn btn-dark align-middle" href="{{ url_for('admin.edit_ann', ann_id=ann.id) }}">Edit</a>
+            </td>
+            <td class="text-center align-middle">
+              <a class="bi bi-trash announcement-delete" href="{{ url_for('admin.delete_ann', ann_id=ann.id) }}"></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+{% endblock content %}
+{% block sidebar %}
+  <div class="col-md-4">
+    <div class="content-section">
+        <span class="sidebar-circle">
+            <img class="sidebar-megaphone" src="{{ url_for('static', filename='megaphone-white.svg') }}">
+        </span>
+      <h3 class="text-center">What's New?</h3>
+      <p class="text-muted text-center lead">Here you can get updated with our latest features.</p>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item text-center lead mb-2">Announcements</li>
+            <p class="text-center mt-2 text-muted sidebar-p-mb">
+              {% for ann in anns %}
+                  &#8226; {{ann.content}}<br>
+              {% endfor %}
+            </p>
+        </ul>
+    </div>
+      <ul class="list-group mb-3">
+        <a type="button" class="btn list-group-item list-group-item-light text-center sidebar-button" href="{{ url_for('users.saved_posts', username=current_user.username) }}">Saved Posts</a>
+      </ul>
+  </div>
+{% endblock sidebar %}

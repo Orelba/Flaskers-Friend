@@ -1,0 +1,98 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if current_user.is_authenticated %}
+  <article class="media content-section-user-connected">
+    <div class="d-flex align-content-stretch flex-wrap post-like-dislike">
+      {% set vote_count = post.likes.count()-post.dislikes.count() %}
+      {% if current_user.has_liked_post(post) %}
+        <a class="bi bi-hand-thumbs-up-fill post-like-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+          {% if vote_count > 0 %}
+            <span class="vote-count-positive">{{ vote_count }}</span>
+          {% elif vote_count < 0 %}
+            <span class="vote-count-negative">{{ vote_count }}</span>
+          {% else %}
+            <span class="vote-count-positive">Vote</span>
+          {% endif %}
+        <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
+      {% elif current_user.has_disliked_post(post) %}
+        <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+          {% if vote_count > 0 %}
+            <span class="vote-count-positive">{{ vote_count }}</span>
+          {% elif vote_count < 0 %}
+            <span class="vote-count-negative">{{ vote_count }}</span>
+          {% else %}
+            <span class="vote-count-negative">Vote</span>
+          {% endif %}
+        <a class="bi bi-hand-thumbs-down-fill post-dislike-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
+      {% else %}
+        <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+          {% if vote_count > 0 %}
+            <span class="vote-count-positive">{{ vote_count }}</span>
+          {% elif vote_count < 0 %}
+            <span class="vote-count-negative">{{ vote_count }}</span>
+          {% else %}
+            <span class="vote-count-no-vote">Vote</span>
+          {% endif %}
+        <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
+      {% endif %}
+    </div>
+    <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+        <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+        {% if not current_user.has_saved_post(post) %}
+          <a class="bi bi-bookmark-heart post-favorite-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='save') }}"></a>
+        {% else %}
+          <a class="bi bi-bookmark-heart-fill post-favorite-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='unsave') }}"></a>
+        {% endif %}
+      </div>
+      {% if post.author == current_user or current_user.admin%}
+        <div >
+          <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+          <button type="button" class="btn btn-danger btn-sm mt-1 mb-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        </div>
+      {% endif %}
+      <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+      <p class="article-content">{{ post.content }}</p>
+    </div>
+  </article>
+  {% else %}
+    <article class="media content-section">
+      <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+      <div class="media-body">
+        <div class="article-metadata">
+          <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+          <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+          {% if post.author == current_user or current_user.admin == 1 %}
+            <div >
+              <a class="btn btn-secondary btn-sm m-1" href="{{ url_for('posts.update_post', post_id=post.id) }}">Update</a>
+              <button type="button" class="btn btn-danger btn-sm mt-1 mb-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
+            </div>
+          {% endif %}
+        </div>
+        <h2 class="article-title">{{ post.title }}</h2>
+        <p class="article-content">{{ post.content }}</p>
+      </div>
+    </article>
+  {% endif %}
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Post?</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <form action="{{ url_for('posts.delete_post', post_id=post.id) }}" method="POST">
+            <input class="btn btn-danger" type="submit" value="Delete">
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock content %}

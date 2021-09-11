@@ -1,0 +1,390 @@
+html, body {
+  height: 95.8%;
+}
+
+.content {
+ flex: 1 0 auto;
+}
+
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+  display: flex;
+  flex-direction: column;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+.bg-steel {
+  background-color: #282a35;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.content-section-user-connected {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+  padding-left: 0;
+}
+
+.article-title {
+  color: #444444;
+  overflow-wrap: anywhere
+}
+
+a.article-title:hover {
+  color: #636883;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+  overflow-wrap: anywhere
+}
+
+.article-img {
+  object-fit: cover;
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+![](../../../../../AppData/Local/Temp/default.jpg)
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.account-img {
+  object-fit: cover;
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.table-account-img {
+  object-fit: cover;
+  height: 38px;
+  width: 38px;
+}
+
+.user-manager-account-img {
+  object-fit: cover;
+  height: 115px;
+  width: 115px;
+  margin-right: 20px;
+  margin-bottom: 25px;
+  margin-top: 12px;
+}
+
+.navbar-account-img {
+  object-fit: cover;
+  margin-right: 1px;
+  height: 35px;
+  width: 35px;
+}
+
+.table-box {
+  max-width: 775px;
+  margin-inline-end: 20px;
+  padding: 0;
+}
+
+.user-manager-table-mt {
+  margin-top: 6px;
+}
+
+.user-manager-rbtn-align {
+  vertical-align: -1px;
+}
+
+.btn-xs {
+    width: 83.5px;
+    padding: 0rem 0rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    vertical-align: baseline;
+
+}
+
+.btn-xs-ann {
+    width: 52.81px;
+    padding: 0rem 0rem;
+    font-size: .875rem;
+    line-height: 1.5;
+    border-radius: .2rem;
+    vertical-align: baseline;
+
+}
+
+.announcement-delete {
+  color: inherit;
+  font-size: 1.5rem;
+}
+
+.announcement-delete:hover {
+  color: #c94c4c;
+}
+
+
+.width60 {
+  width: auto !important;
+  display:inline-block !important;
+}
+
+.main-container {
+  justify-content: center;
+}
+
+.pagination {
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+svg.bi.bi-icon-xl {
+    height: 32px !important;
+    width: 32px !important;
+}
+
+.post-like-dislike {
+  width: 40px;
+  border-right: 10px solid transparent;
+  border-left: 13px solid transparent;
+  justify-content: center;
+}
+
+
+.post-like-outline {
+  color: inherit;
+  font-size: 1.2rem;
+}
+
+.post-like-outline:hover {
+  color: #04AA6D;
+}
+
+.post-like-fill {
+  color: #04AA6D;
+  font-size: 1.2rem;
+}
+
+.post-like-fill:hover {
+  color: #069661;
+}
+
+
+.post-dislike-outline {
+  color: inherit;
+  font-size: 1.2rem;
+}
+
+.post-dislike-outline:hover {
+  color: #c94c4c;
+}
+
+.post-dislike-fill {
+  color: #c94c4c;
+  font-size: 1.2rem;
+}
+
+.post-dislike-fill:hover {
+  color: #af3a3a;
+}
+
+.post-favorite-outline {
+  color: black;
+  float: right;
+  font-size: 1.2rem;
+}
+
+.post-favorite-outline:hover {
+  color: CornflowerBlue !important;
+  float: right;
+  font-size: 1.2rem;
+}
+
+.post-favorite-fill {
+  color: CornflowerBlue;
+  float: right;
+  font-size: 1.2rem;
+}
+
+.post-favorite-fill:hover {
+  color: #6487c5 !important;
+}
+
+.btn-theme {
+  color: #fff;
+  background-color: #585c74;
+  border-color: #585c74;
+}
+
+.btn-theme:hover {
+  color: #fff;
+  background-color: #424557;
+  border-color: #424557;
+}
+
+.btn-outline-theme {
+  color: #585c74;
+  border-color: #585c74;
+}
+
+.btn-outline-theme:hover {
+  background-color: #585c74;
+  color: #fff;
+  border-color: #585c74;
+}
+
+.btn-emerald {
+  color: #fff;
+  background-color: #04AA6D;
+  border-color: #04AA6D;
+}
+
+.btn-emerald:hover {
+  color: #fff;
+  background-color: #049560;
+  border-color: #049560;
+}
+
+.btn-outline-emerald {
+  color: #04AA6D;
+  border-color: #04AA6D;
+}
+
+.btn-outline-emerald:hover {
+  background-color: #04AA6D;
+  color: #fff;
+  border-color: #04AA6D;
+}
+
+.pagination-container {
+  width: fit-content;
+  margin: 0 auto;
+}
+
+.vote-count-no-vote {
+  font-size: Small;
+  font-weight: 500;
+}
+
+.vote-count-positive {
+  font-size: Small;
+  font-weight: Bold;
+  color: #04AA6D;
+}
+
+.vote-count-negative {
+  font-size: Small;
+  font-weight: Bold;
+  color: #c94c4c;
+}
+
+.sidebar-announcement-button {
+  color: inherit;
+}
+
+.sidebar-announcement-button:hover {
+  text-decoration: none;
+  transition: color .15s ease-in-out,
+  background-color .15s ease-in-out,
+  border-color .15s ease-in-out,
+  box-shadow .15s ease-in-out;
+  background-color: #deb6c5;
+  color: white;
+}
+
+.sidebar-button:hover {
+  transition: color .15s ease-in-out,
+  background-color .15s ease-in-out,
+  border-color .15s ease-in-out,
+  box-shadow .15s ease-in-out;
+  background-color: #deb6c5;
+  color: white;
+}
+
+.sidebar-circle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #deb6c5;
+  color: #deb6c5;
+  border-radius: 50%;
+  padding: 10px;
+  height: 70px;
+  width: 70px;
+  top: -30px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: -23px;
+  left: 0;
+  right: 0;
+}
+
+.sidebar-megaphone {
+  height: 40px;
+  transform: rotate(343deg);
+}
+
+.sidebar-p-mb {
+  margin-bottom: 8px;
+}
+
+.wrapper {
+  display: flex;
+}
+
+.footer {
+  flex-shrink: 0;
+}
+
+.site-footer {
+ font: normal 11px arial,Calibri,Verdana,Geneva,sans-serif;
+}

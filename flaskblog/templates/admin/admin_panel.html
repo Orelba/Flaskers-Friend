@@ -1,0 +1,88 @@
+{% extends "layout.html" %}
+{% block heading %}
+  <h1 class="display-4 text-center">Admin Panel</h1>
+{% endblock %}
+{% block main_container %}
+    <main role="main" class="container col-lg-10">
+      <div class="row main-container">
+{% endblock %}
+{% block sidebox %}
+  <div class="col-md-8 table-box">
+{% endblock sidebox %}
+{% block content %}
+<div class="content section">
+  <div class="panel panel-default content-section">
+    <!-- Default panel contents -->
+    <div class="panel-heading">
+        <h3 class="text-center">User Management</h3>
+    </div>
+    <!-- Table -->
+    {% set current_page = request.args.get('page') %}
+    <div class="table-responsive">
+      <table class="table table-hover user-manager-table-mt">
+        <thead class="thead-light">
+          <tr>
+            <th scope="col" class="text-center">ID</th>
+            <th scope="col" class="text-center">Image</th>
+            <th scope="col" class="text-center">Username</th>
+            <th scope="col" class="text-center">Email</th>
+            <th scope="col" class="text-center">Status</th>
+            <th scope="col" class="text-center">Posts</th>
+            <th scope="col" class="text-center">
+              <a type="button" class="btn btn-emerald btn-xs" href="{{ url_for('admin.add_user', page=current_page) }}"><i class="bi bi-person-plus"></i> Add User</a>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for user in users.items %}
+          <tr>
+            <th scope="row" class="text-center align-middle">{{ user.id }}</th>
+            <td class="text-center align-middle">
+              <img class="rounded-circle table-account-img" src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}">
+            </td>
+            <td class="text-center align-middle">{{ user.username }}</td>
+            <td class="text-center align-middle">{{ user.email }}</td>
+            <td class="text-center align-middle">
+              {% if user.admin %}
+                <span class="badge badge-warning">Admin</span>
+              {% else %}
+                <span class="badge badge-info">User</span>
+              {% endif %}
+            </td>
+            <td class="text-center align-middle">
+              {% set user_post_count = Post.query.filter_by(user_id=user.id).count() %}
+              {% if user_post_count == 0 %}
+                <button type="button" class="btn btn-dark btn-sm btn-block" disabled>No Posts</button>
+              {% else %}
+                <a type="button" class="btn btn-secondary btn-sm btn-block align-middle" style="width: 81px;" href="{{ url_for('users.user_posts', username=user.username) }}">
+                  Posts <span class="badge badge-light">{{ user_post_count }}</span>
+                </a>
+              {% endif %}
+            <td class="text-center align-middle">
+              <a type="button" class="btn btn-dark align-middle" href="{{ url_for('admin.manage_user', page=current_page, user_id=user.id) }}">Manage</a>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+{% block sidebar %}
+{% endblock sidebar %}
+  {% block pagination %}
+    {% if users.query.all()|length > per_page %}
+      {% for page_num in users.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+        {% if page_num %}
+          {% if users.page == page_num %}
+            <a class="btn btn-theme mb-4" href="{{ url_for('admin.admin_panel', page=page_num) }}">{{ page_num }}</a>&nbsp
+          {% else %}
+            <a class="btn btn-outline-theme mb-4" href="{{ url_for('admin.admin_panel', page=page_num) }}">{{ page_num }}</a>&nbsp
+          {% endif %}
+        {% else %}
+          ...
+        {% endif %}
+      {% endfor %}
+    {% endif %}
+  {% endblock pagination %}

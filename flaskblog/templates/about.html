@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h1 class="mb-3">About Page</h1>
+  <h3 class="mb-4"> This blog was developed by Orel Barzilay using Flask and Python including SQLAlchemy (SQLite).</h3>
+  <a type="button" class="btn btn-secondary btn-sm btn-dark" href="https://github.com/Orelba" target="_blank" style="margin-bottom: 40px;">
+    <img src="{{ url_for('static', filename='GitHub-Mark-Light-64px.png') }}" style="fill: black; height: 20px;">
+    Orelba
+  </a>
+{% endblock content %}

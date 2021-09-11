@@ -1,0 +1,75 @@
+{% extends "layout.html" %}
+{% block content %}
+{% if saved_posts.total != 0 %}
+    <h1 class="mb-3">My Saved Posts ({{ saved_posts.total }})</h1>
+{% for save in saved_posts.items %}
+  <article class="media content-section-user-connected">
+    <div class="d-flex align-content-stretch flex-wrap post-like-dislike">
+      {% set vote_count = save.post.likes.count()-save.post.dislikes.count() %}
+      {% if current_user.has_liked_post(save.post) %}
+        <a class="bi bi-hand-thumbs-up-fill post-like-fill" href="{{ url_for('posts.post_action', post_id=save.post.id, action='like') }}"></a>
+          {% if vote_count > 0 %}
+            <span class="vote-count-positive">{{ vote_count }}</span>
+          {% elif vote_count < 0 %}
+            <span class="vote-count-negative">{{ vote_count }}</span>
+          {% else %}
+            <span class="vote-count-positive">Vote</span>
+          {% endif %}
+        <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=save.post.id, action='dislike') }}"></a>
+      {% elif current_user.has_disliked_post(save.post) %}
+        <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=save.post.id, action='like') }}"></a>
+          {% if vote_count > 0 %}
+            <span class="vote-count-positive">{{ vote_count }}</span>
+          {% elif vote_count < 0 %}
+            <span class="vote-count-negative">{{ vote_count }}</span>
+          {% else %}
+            <span class="vote-count-negative">Vote</span>
+          {% endif %}
+        <a class="bi bi-hand-thumbs-down-fill post-dislike-fill" href="{{ url_for('posts.post_action', post_id=save.post.id, action='dislike') }}"></a>
+      {% else %}
+        <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=save.post.id, action='like') }}"></a>
+          {% if vote_count > 0 %}
+            <span class="vote-count-positive">{{ vote_count }}</span>
+          {% elif vote_count < 0 %}
+            <span class="vote-count-negative">{{ vote_count }}</span>
+          {% else %}
+            <span class="vote-count-no-vote">Vote</span>
+          {% endif %}
+        <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=save.post.id, action='dislike') }}"></a>
+      {% endif %}
+    </div>
+      <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + save.post.author.image_file) }}">
+      <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="{{ url_for('users.user_posts', username=save.post.author.username) }}">{{ save.post.author.username }}</a>
+        <small class="text-muted">{{ save.post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+        {% if not current_user.has_saved_post(save.post) %}
+          <a class="bi bi-bookmark-heart post-favorite-outline" href="{{ url_for('posts.post_action', post_id=save.post.id, action='save') }}"></a>
+        {% else %}
+          <a class="bi bi-bookmark-heart-fill post-favorite-fill" href="{{ url_for('posts.post_action', post_id=save.post.id, action='unsave') }}"></a>
+        {% endif %}
+      </div>
+        <h2><a class="article-title" href="{{ url_for('posts.post', post_id=save.post.id) }}">{{ save.post.title }}</a></h2>
+        <p class="article-content">{{ save.post.content }}</p>
+      </div>
+    </article>
+    {% endfor %}
+{% else %}
+    <h1 class="mb-3">My Saved Posts ({{ saved_posts.total }})</h1>
+    <h3 class="mb-3"> It's pretty empty here...</h3>
+    <h4>You can save posts by pressing the bookmark sign in the right corner of each post.</h4>
+{% endif %}
+{% endblock content %}
+{% block pagination %}
+    {% for page_num in saved_posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
+      {% if page_num %}
+        {% if saved_posts.page == page_num %}
+          <a class="btn mb-4 btn-theme" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        {% else %}
+          <a class="btn btn-outline-theme mb-4" href="{{ url_for('main.home', page=page_num) }}">{{ page_num }}</a>
+        {% endif %}
+      {% else %}
+        ...
+      {% endif %}
+    {% endfor %}
+{% endblock pagination %}
