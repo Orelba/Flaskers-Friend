@@ -1,74 +1,150 @@
 {% extends "layout.html" %}
 {% block content %}
   {% if current_user.is_authenticated %}
-    {% for post in posts.items %}  <!-- .items is for the pagination -->
-      <article class="media content-section-user-connected cancel-margin">
-        <div class="d-flex align-content-stretch flex-wrap post-like-dislike">
-          {% set vote_count = post.likes.count()-post.dislikes.count() %}
-          {% if current_user.has_liked_post(post) %}
-            <a class="bi bi-hand-thumbs-up-fill post-like-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
-              {% if vote_count > 0 %}
-                <span class="vote-count-positive">{{ vote_count }}</span>
-              {% elif vote_count < 0 %}
-                <span class="vote-count-negative">{{ vote_count }}</span>
+    {% if request.MOBILE %}
+      {% for post in posts.items %}  <!-- .items is for the pagination -->
+        <article class="media content-section-user-connected cancel-margin">
+          <div class="phone-reposition">
+            <img class="rounded-circle article-img mobile-image-resize" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+            <div class="d-flex align-content-stretch flex-wrap post-like-dislike">
+              {% set vote_count = post.likes.count()-post.dislikes.count() %}
+              {% if current_user.has_liked_post(post) %}
+                <a class="bi bi-hand-thumbs-up-fill post-like-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+                  {% if vote_count > 0 %}
+                    <span class="vote-count-positive">{{ vote_count }}</span>
+                  {% elif vote_count < 0 %}
+                    <span class="vote-count-negative">{{ vote_count }}</span>
+                  {% else %}
+                    <span class="vote-count-positive">Vote</span>
+                  {% endif %}
+                <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
+              {% elif current_user.has_disliked_post(post) %}
+                <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+                  {% if vote_count > 0 %}
+                    <span class="vote-count-positive">{{ vote_count }}</span>
+                  {% elif vote_count < 0 %}
+                    <span class="vote-count-negative">{{ vote_count }}</span>
+                  {% else %}
+                    <span class="vote-count-negative">Vote</span>
+                  {% endif %}
+                <a class="bi bi-hand-thumbs-down-fill post-dislike-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
               {% else %}
-                <span class="vote-count-positive">Vote</span>
+                <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+                  {% if vote_count > 0 %}
+                    <span class="vote-count-positive">{{ vote_count }}</span>
+                  {% elif vote_count < 0 %}
+                    <span class="vote-count-negative">{{ vote_count }}</span>
+                  {% else %}
+                    <span class="vote-count-no-vote">Vote</span>
+                  {% endif %}
+                <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
               {% endif %}
-            <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
-          {% elif current_user.has_disliked_post(post) %}
-            <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
-              {% if vote_count > 0 %}
-                <span class="vote-count-positive">{{ vote_count }}</span>
-              {% elif vote_count < 0 %}
-                <span class="vote-count-negative">{{ vote_count }}</span>
+            </div>
+          </div>
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+              {% if not current_user.has_saved_post(post) %}
+                <a class="bi bi-bookmark-heart post-favorite-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='save') }}"></a>
               {% else %}
-                <span class="vote-count-negative">Vote</span>
+                <a class="bi bi-bookmark-heart-fill post-favorite-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='unsave') }}"></a>
               {% endif %}
-            <a class="bi bi-hand-thumbs-down-fill post-dislike-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
-          {% else %}
-            <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
-              {% if vote_count > 0 %}
-                <span class="vote-count-positive">{{ vote_count }}</span>
-              {% elif vote_count < 0 %}
-                <span class="vote-count-negative">{{ vote_count }}</span>
-              {% else %}
-                <span class="vote-count-no-vote">Vote</span>
-              {% endif %}
-            <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
-          {% endif %}
-        </div>
-        <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-        <div class="media-body">
-          <div class="article-metadata">
-            <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-            <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
-            {% if not current_user.has_saved_post(post) %}
-              <a class="bi bi-bookmark-heart post-favorite-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='save') }}"></a>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+          </div>
+        </article>
+      {% endfor %}
+    {% else %}
+      {% for post in posts.items %}  <!-- .items is for the pagination -->
+        <article class="media content-section-user-connected cancel-margin">
+          <div class="d-flex align-content-stretch flex-wrap post-like-dislike">
+            {% set vote_count = post.likes.count()-post.dislikes.count() %}
+            {% if current_user.has_liked_post(post) %}
+              <a class="bi bi-hand-thumbs-up-fill post-like-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+                {% if vote_count > 0 %}
+                  <span class="vote-count-positive">{{ vote_count }}</span>
+                {% elif vote_count < 0 %}
+                  <span class="vote-count-negative">{{ vote_count }}</span>
+                {% else %}
+                  <span class="vote-count-positive">Vote</span>
+                {% endif %}
+              <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
+            {% elif current_user.has_disliked_post(post) %}
+              <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+                {% if vote_count > 0 %}
+                  <span class="vote-count-positive">{{ vote_count }}</span>
+                {% elif vote_count < 0 %}
+                  <span class="vote-count-negative">{{ vote_count }}</span>
+                {% else %}
+                  <span class="vote-count-negative">Vote</span>
+                {% endif %}
+              <a class="bi bi-hand-thumbs-down-fill post-dislike-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
             {% else %}
-              <a class="bi bi-bookmark-heart-fill post-favorite-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='unsave') }}"></a>
+              <a class="bi bi-hand-thumbs-up post-like-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='like') }}"></a>
+                {% if vote_count > 0 %}
+                  <span class="vote-count-positive">{{ vote_count }}</span>
+                {% elif vote_count < 0 %}
+                  <span class="vote-count-negative">{{ vote_count }}</span>
+                {% else %}
+                  <span class="vote-count-no-vote">Vote</span>
+                {% endif %}
+              <a class="bi bi-hand-thumbs-down post-dislike-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='dislike') }}"></a>
             {% endif %}
           </div>
-          <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-          <p class="article-content">{{ post.content }}</p>
-        </div>
-      </article>
-    {% endfor %}
-  {% else %}
-    {% for post in posts.items %}
-      <article class="media content-section cancel-margin">
-        <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
-        <div class="media-body">
-          <div class="article-metadata">
-            <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
-            <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+          <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+              {% if not current_user.has_saved_post(post) %}
+                <a class="bi bi-bookmark-heart post-favorite-outline" href="{{ url_for('posts.post_action', post_id=post.id, action='save') }}"></a>
+              {% else %}
+                <a class="bi bi-bookmark-heart-fill post-favorite-fill" href="{{ url_for('posts.post_action', post_id=post.id, action='unsave') }}"></a>
+              {% endif %}
+            </div>
+            <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
           </div>
-          <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
-          <p class="article-content">{{ post.content }}</p>
-        </div>
-      </article>
-    {% endfor %}
+        </article>
+      {% endfor %}
+    {% endif %}
+  {% else %}
+    {% if request.MOBILE %}
+      {% for post in posts.items %}
+        <article class="media content-section cancel-margin" style="padding-left: 9px;">
+          <div class="phone-reposition">
+            <img class="rounded-circle article-img mobile-image-resize mobile-image-user-not-connected" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+          </div>
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+          </div>
+        </article>
+      {% endfor %}
+    {% else %}
+      {% for post in posts.items %}
+        <article class="media content-section cancel-margin">
+          <img class="rounded-circle article-img mobile-image-user-not-connected" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{{ url_for('users.user_posts', username=post.author.username) }}">{{ post.author.username }}</a>
+              <small class="text-muted">{{ post.date_posted.strftime('%H:%M %d-%m-%Y') }}</small>
+            </div>
+            <h2><a class="article-title" href="{{ url_for('posts.post', post_id=post.id) }}">{{ post.title }}</a></h2>
+            <p class="article-content">{{ post.content }}</p>
+          </div>
+        </article>
+      {% endfor %}
+    {% endif %}
   {% endif %}
 {% endblock content %}
+
 {% block pagination %}
     {% for page_num in posts.iter_pages(left_edge=1, right_edge=1, left_current=1, right_current=2) %}
       {% if page_num %}
@@ -82,4 +158,3 @@
       {% endif %}
     {% endfor %}
 {% endblock pagination %}
-

@@ -24,7 +24,7 @@
       <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
         <div class="container">
           <a class="navbar-brand mr-4 font-italic" href="/">
-            <img src="{{ url_for('static', filename='logo_24x24.png') }}" style="height: 24px;">
+            <img src="{{ url_for('static', filename='logo_24x24.png') }}"> <!-- for mobile: height: 25px; ??} -->
             Flasker's Friend
           </a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
             <div class="navbar-nav">
               {% if current_user.is_authenticated and current_user.admin == 1 %}
                 <a class="nav-item nav-link" style="padding-bottom: 0; padding-top: 4px;" href="{{ url_for('users.account') }}">
-                  <img class="rounded-circle navbar-account-img my-auto" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
+                  <img class="rounded-circle navbar-account-img my-auto mobile-navbar-acnt-img" src="{{ url_for('static', filename='profile_pics/' + current_user.image_file) }}">
                   {{ current_user.username }}
                 </a>
                 <a class="nav-item nav-link" href="{{ url_for('posts.new_post') }}">New Post</a>
