@@ -128,10 +128,10 @@ def add_user():
             form.admin.data = False
         try:
             picture_file = save_add_user_picture(form.picture.data)
-            user = User(username=form.username.data, email=form.email.data, password=hashed_password,
+            user = User(username=form.username.data, email=form.email.data.lower(), password=hashed_password,
                         admin=form.admin.data, image_file=picture_file)
         except AttributeError:
-            user = User(username=form.username.data, email=form.email.data, password=hashed_password,
+            user = User(username=form.username.data, email=form.email.data.lower(), password=hashed_password,
                         admin=form.admin.data)
         db.session.add(user)
         db.session.commit()

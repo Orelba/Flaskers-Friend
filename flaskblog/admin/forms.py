@@ -21,7 +21,7 @@ class ManageUserForm(FlaskForm):
             raise ValidationError('The username is already in use.')
 
     def validate_email(self, email):
-        if email.data != self.user.email and User.query.filter_by(email=email.data.lower()).first():
+        if email.data.lower() != self.user.email and User.query.filter_by(email=email.data.lower()).first():
             raise ValidationError('The email is already in use.')
 
 
@@ -40,7 +40,7 @@ class AddUserForm(FlaskForm):
             raise ValidationError('That username is taken. Please choose a different one.')
 
     def validate_email(self, email):
-        user = User.query.filter_by(email=email.data).first()
+        user = User.query.filter_by(email=email.data.lower()).first()
         if user:
             raise ValidationError('That email is taken. Please choose a different one.')
 
