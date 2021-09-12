@@ -40,7 +40,7 @@ def manage_user(user_id):
             picture_file = save_user_picture(user, form.picture.data)
             user.image_file = picture_file
         user.username = form.username.data
-        user.email = form.email.data
+        user.email = form.email.data.lower()
         if form.admin.data == 'Admin':
             user.admin = True
         elif form.admin.data == 'User' and user != current_user:

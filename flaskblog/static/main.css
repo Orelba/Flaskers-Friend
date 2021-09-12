@@ -388,3 +388,13 @@ svg.bi.bi-icon-xl {
 .site-footer {
  font: normal 11px arial,Calibri,Verdana,Geneva,sans-serif;
 }
+
+@media only screen and (max-width: 751px) {
+  .sidebar-margin {
+    margin-top: 27px;
+  }
+  .cancel-margin:last-of-type {
+ margin-bottom: 0;
+}
+}
+

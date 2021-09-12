@@ -3,7 +3,7 @@
 {% if saved_posts.total != 0 %}
     <h1 class="mb-3">My Saved Posts ({{ saved_posts.total }})</h1>
 {% for save in saved_posts.items %}
-  <article class="media content-section-user-connected">
+  <article class="media content-section-user-connected cancel-margin">
     <div class="d-flex align-content-stretch flex-wrap post-like-dislike">
       {% set vote_count = save.post.likes.count()-save.post.dislikes.count() %}
       {% if current_user.has_liked_post(save.post) %}

@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 {% block content %}
 {% if current_user.is_authenticated %}
-  <article class="media content-section-user-connected">
+  <article class="media content-section-user-connected cancel-margin">
     <div class="d-flex align-content-stretch flex-wrap post-like-dislike">
       {% set vote_count = post.likes.count()-post.dislikes.count() %}
       {% if current_user.has_liked_post(post) %}
@@ -58,7 +58,7 @@
     </div>
   </article>
   {% else %}
-    <article class="media content-section">
+    <article class="media content-section cancel-margin">
       <img class="rounded-circle article-img" src="{{ url_for('static', filename='profile_pics/' + post.author.image_file) }}">
       <div class="media-body">
         <div class="article-metadata">
