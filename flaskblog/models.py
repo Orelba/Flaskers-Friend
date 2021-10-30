@@ -1,9 +1,13 @@
 from datetime import datetime
+import pytz
 from itsdangerous import TimedJSONWebSignatureSerializer as Serializer
 from flask import current_app
 from . import db, login_manager
 from flask_login import UserMixin
 
+
+def time_now():
+    return datetime.now(tz=pytz.timezone('Israel'))
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -83,7 +87,7 @@ class User(db.Model, UserMixin):
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date_posted = db.Column(db.DateTime, nullable=False, default=time_now)
     content = db.Column(db.Text, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)  # ForeignKey refers User table key
     likes = db.relationship('PostLike', backref='post', lazy='dynamic')
@@ -113,10 +117,10 @@ class PostSave(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     post_id = db.Column(db.Integer, db.ForeignKey('post.id'))
-    date_saved = db.Column(db.DateTime, nullable=False, default=datetime.now)
+    date_saved = db.Column(db.DateTime, nullable=False, default=time_now)
 
 
 class Announcements(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.Text, nullable=False)
-    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.now, onupdate=datetime.now)
+    date_posted = db.Column(db.DateTime, nullable=False, default=time_now, onupdate=time_now)
